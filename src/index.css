@@ -56,7 +56,10 @@ body {
   background: linear-gradient(78deg, var(--first), var(--second)); 
   /* animation: bg 10s ease-in-out infinite ; */
   background-size: 150%;
-  height : 97vh;
+  margin : 0;
+  padding: 0;
+  height : 100vh;
+  
   display: flex;
   justify-content: center;
   backdrop-filter: blur(4px);

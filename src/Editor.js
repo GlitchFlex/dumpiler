@@ -8,6 +8,12 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "prismjs/themes/prism-tomorrow.css";
 import { secret } from "./temp";
+import Output from "./Output";
+import { tokenizer } from "./tokenizer";
+import { parser } from "./parser";
+import { syntaxAnalyzer } from "./verifier";
+import { sematicAnalyzer } from "./processor";
+import { initGenerate } from "./codegenerator";
 
 const code = `//code goes here
 `;
@@ -20,20 +26,29 @@ const hightlightWithLineNumbers = (input, language) =>
 
 function SimpEditor() {
   const [codeValue, setCodeValue] = useState(code);
+  const [outputModalIsOpen, setOutputModalIsOpen] = useState(false);
+  const [output, setOutput] = useState(null);
 
-  const clickHandler = ()=>{
+
+  const clickHandler = async ()=>{
     let text = "";
     
 
     const obj =   {language : "cpp",code : codeValue, input : "", save : false}
     console.log(JSON.stringify(JSON.stringify(obj)));
+    setOutputModalIsOpen(true);
 
-    secret(JSON.stringify(obj))
+
+    const data = await secret(JSON.stringify(obj), setOutput);
+    initGenerate(sematicAnalyzer(syntaxAnalyzer(parser(tokenizer(JSON.stringify(obj))))));
+    console.log(data);
     
   }
+  // console.log(outpZut, "asdsa");
 
   return (
     <>
+    <div className="lexi" style = {{height : "70vh", overflowY : "scroll", overflowX : "hidden", background : "rgb(0, 0, 0, 0.4)"}}>
     <Editor
       value={codeValue}
       onValueChange={code => setCodeValue(code)}
@@ -49,8 +64,15 @@ function SimpEditor() {
         outline: 0
       }}
     />
+    </div>
+    
+    
 
+    {/* {output &&  */}
+    <Output outputModalIsOpen = {outputModalIsOpen} setOutputModalIsOpen = {setOutputModalIsOpen} output = {output}/>
+    {/* } */}
     <button style = {{padding : "10px 25px", outline : "none", border : "none", background : "rgb(0, 0, 0, 0.4) ", color : "white", cursor : "pointer", marginTop : "10px" }} onClick={clickHandler}>Run</button>
+
     </>
   );
 }

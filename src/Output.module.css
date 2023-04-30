@@ -1,0 +1,19 @@
+.ant-modal-content{
+    border-radius: 0px !important;
+    background-color: black;
+    
+}
+
+
+.ant-modal {
+    border-radius: 0px !important;
+    background-color: black;
+
+}
+
+:where(.css-dev-only-do-not-override-mxhywb).ant-modal .ant-modal-content{
+    background-color: black;
+    border-radius: 0px !important;
+}
+  
+
